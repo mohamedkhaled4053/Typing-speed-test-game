@@ -1,6 +1,8 @@
 // variables
     let theWord = document.querySelector('.the-word')
     let startButton = document.querySelector('.start')
+    let restartButton = document.querySelector('.restart')
+    let exitButton = document.querySelector('.exit')
     let upcomingWords = document.querySelector('.upcoming-words')
     let lvlSpan = document.querySelector('.message .lvl')
     let timeSpan = document.querySelector('.message .seconds')
@@ -17,11 +19,11 @@
     }
 
     // default lvl
-    let defaultLevel = 'easy';
+    let defaultLevel = 'hard';
     let defaultTime = lvls[defaultLevel]
 
     // array of words
-    const words = [
+    let words = [
         "Hello",
         "Programming",
         "Code",
@@ -54,6 +56,7 @@
         "Playing"
     ];
 
+    let callbackWords = [...words]
 
 // helper functions
 
@@ -99,8 +102,9 @@
     // gameOver function
     function gameOver(){
         clearInterval(timer)
-        // stop checking input field
-        input.removeEventListener('keyup',inputCheck)
+        input.removeEventListener('keyup',inputCheck) // stop checking input field
+        input.disabled = true // disable input field when game is over
+        upcomingWords.style.display ='none' // remove upcomming words section
 
         let div = document.createElement('div')
         finish.appendChild(div)
@@ -113,7 +117,23 @@
         }
     }
 
+    // reset everything
+    function reset() {
+        input.value = '' // clear input field to type something else
+        clearInterval(timer)
 
+        remainingTime.textContent = defaultTime
+        score.children[0].innerHTML = 0
+        words = [...callbackWords]
+
+        upcomingWords.innerHTML = 'Words Will Show Here'
+        theWord.innerHTML = ''
+
+        input.addEventListener('keyup', inputCheck) // add the eventListener again after gameover
+        input.disabled = false // remove disabled attr from input
+        upcomingWords.style.display ='flex' // show upcomming words after gameover
+        finish.innerHTML = ''
+    }
 
 // main code
     lvlSpan.textContent = defaultLevel
@@ -125,11 +145,12 @@
     input.onpaste = ()=> false
 
 
-
 // events
     let timer
     startButton.addEventListener('click', ()=>{
         startButton.style.display = 'none' // hide the button
+        restartButton.style.display = 'block'
+        exitButton.style.display = 'block'
         input.value = '' // clear input field to type something else
         input.focus()
         // count down
@@ -145,3 +166,17 @@
 
     // check what you type
     input.addEventListener('keyup', inputCheck)
+
+    // restart button
+    restartButton.addEventListener('click', ()=>{
+        reset()
+        startButton.click()
+    })
+
+    // exit button
+    exitButton.addEventListener('click', ()=>{
+        exitButton.style.display = 'none'
+        restartButton.style.display = 'none'
+        startButton.style.display = 'block'
+        reset()
+    })

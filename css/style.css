@@ -52,15 +52,39 @@ body {
     content: " ]";
 }
 
-.start {
+.buttons{
+    display: flex;
+    gap: 15px;
+}
+
+.buttons div{
     font-size       : 20px;
     font-weight     : bold;
     text-align      : center;
-    background-color: #009688;
     color           : white;
     padding         : 20px;
     cursor          : pointer;
     user-select: none;
+    flex-basis: 100%;
+    transition: 0.2s;
+}
+
+.buttons div:hover{
+    transform: scale(1.03)
+}
+
+.start {
+    background-color: #009688;
+}
+
+.restart {
+    background-color: rebeccapurple;
+    display: none;
+}
+
+.exit {
+    background-color: rgb(153, 73, 51);
+    display: none;
 }
 
 .the-word {

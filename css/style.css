@@ -60,6 +60,7 @@ body {
     color           : white;
     padding         : 20px;
     cursor          : pointer;
+    user-select: none;
 }
 
 .the-word {
@@ -125,7 +126,7 @@ body {
 }
 
 .finish .good {
-    color: var(--main-color);
+    color: green;
 }
 
 .finish .bad {

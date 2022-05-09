@@ -10,6 +10,7 @@
     let remainingTime = document.querySelector('.control .time span')
     let score = document.querySelector('.score')
     let finish = document.querySelector('.finish')
+    let selectMenu = document.querySelector('.message select')
     
     // add lvls
     let lvls = {
@@ -19,7 +20,7 @@
     }
 
     // default lvl
-    let defaultLevel = 'hard';
+    let defaultLevel = 'normal';
     let defaultTime = lvls[defaultLevel]
 
     // array of words
@@ -121,6 +122,7 @@
     function reset() {
         input.value = '' // clear input field to type something else
         clearInterval(timer)
+        selectMenu.disabled = false // remove disabled attr form selectMenu
 
         remainingTime.textContent = defaultTime
         score.children[0].innerHTML = 0
@@ -135,11 +137,25 @@
         finish.innerHTML = ''
     }
 
+    // auto build select menu
+    function buildSelectMenu(){
+        for (const lvl in lvls) {
+            let opt = document.createElement('option')
+            opt.textContent = lvl
+            opt.value = lvl
+            selectMenu.appendChild(opt)
+        }
+    }
+
+
 // main code
     lvlSpan.textContent = defaultLevel
     timeSpan.textContent = defaultTime
     remainingTime.textContent = defaultTime
     score.children[1].innerHTML = words.length
+
+    // auto build select menu
+    buildSelectMenu()
 
     // disable paste event
     input.onpaste = ()=> false
@@ -151,6 +167,7 @@
         startButton.style.display = 'none' // hide the button
         restartButton.style.display = 'block'
         exitButton.style.display = 'block'
+        selectMenu.disabled = true
         input.value = '' // clear input field to type something else
         input.focus()
         // count down
@@ -179,4 +196,11 @@
         restartButton.style.display = 'none'
         startButton.style.display = 'block'
         reset()
+    })
+
+    // select menu
+    selectMenu.addEventListener('change',()=>{
+        lvlSpan.textContent = selectMenu.value
+        timeSpan.textContent = lvls[selectMenu.value]
+        remainingTime.textContent = lvls[selectMenu.value]
     })

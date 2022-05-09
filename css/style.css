@@ -37,6 +37,17 @@ body {
     margin          : 15px 0;
     border-radius   : 6px;
     text-align      : center;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.message select{
+    font-size: 16px;
+    padding: 5px;
+    color: royalblue;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 .message span {
@@ -70,7 +81,7 @@ body {
 }
 
 .buttons div:hover{
-    transform: scale(1.03)
+    transform: scale(1.02)
 }
 
 .start {

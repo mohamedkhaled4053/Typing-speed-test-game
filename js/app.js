@@ -63,11 +63,13 @@
 
     // get randomWord form array
     function randomWord() {
+        // gameover when no words remains
         if (words.length == 0){
             theWord.textContent = ''
             gameOver()
             return;
         }
+
         let randomIndex = Math.floor(Math.random()*words.length);
         let randomWord = words.splice(randomIndex,1)
         theWord.textContent = randomWord
@@ -177,6 +179,11 @@
                 gameOver()
             }
         }, 1000);
+        // count down in the beginning
+        if (score.children[0].textContent == 0) {
+            remainingTime.textContent = 3 + +remainingTime.textContent
+        }
+        
         // get a word
         randomWord()
     })

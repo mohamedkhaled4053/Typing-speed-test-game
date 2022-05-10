@@ -143,7 +143,7 @@
     function buildSelectMenu(){
         for (const lvl in lvls) {
             let opt = document.createElement('option')
-            opt.textContent = lvl
+            opt.textContent = lvl + ` : ` + lvls[lvl] + 's'
             opt.value = lvl
             selectMenu.appendChild(opt)
         }

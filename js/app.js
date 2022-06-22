@@ -210,4 +210,5 @@
         lvlSpan.textContent = selectMenu.value
         timeSpan.textContent = lvls[selectMenu.value]
         remainingTime.textContent = lvls[selectMenu.value]
+        defaultTime = lvls[selectMenu.value]
     })

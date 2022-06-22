@@ -19,8 +19,8 @@
         hard: 2,
     }
 
-    // default lvl
-    let defaultLevel = 'normal';
+    // get defaultLevel from localstorage if any
+    let defaultLevel =window.localStorage.getItem('level') || 'normal';
     let defaultTime = lvls[defaultLevel]
 
     // array of words
@@ -210,5 +210,9 @@
         lvlSpan.textContent = selectMenu.value
         timeSpan.textContent = lvls[selectMenu.value]
         remainingTime.textContent = lvls[selectMenu.value]
+
+        // update defaultLevel and defaultTime
         defaultTime = lvls[selectMenu.value]
+        defaultLevel = selectMenu.value
+        window.localStorage.setItem('level',`${defaultLevel}`)
     })

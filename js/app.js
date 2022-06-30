@@ -11,6 +11,8 @@
     let score = document.querySelector('.score')
     let finish = document.querySelector('.finish')
     let selectMenu = document.querySelector('.message select')
+    let timer
+
     
     // add lvls
     let lvls = {
@@ -24,7 +26,7 @@
     let defaultTime = lvls[defaultLevel]
 
     // array of words
-    let words = [
+    let defaltWords = [
         "Hello",
         "Programming",
         "Code",
@@ -57,9 +59,39 @@
         "Playing"
     ];
 
-    let callbackWords = [...words]
+    let words = defaltWords
+
 
 // helper functions
+
+    // start the game
+    function startGame() {
+        // remove loading text
+        startButton.textContent = 'start playing'
+        restartButton.textContent = 'restart'
+
+        // get the style
+        startButton.style.display = 'none' // hide the button
+        restartButton.style.display = 'block'
+        exitButton.style.display = 'block'
+        selectMenu.disabled = true
+        input.value = '' // clear input field to type something else
+        input.focus()
+        // count down
+        timer = setInterval(() => {
+            remainingTime.textContent = remainingTime.textContent - 1
+            if (remainingTime.textContent == 0) {
+                gameOver()
+            }
+        }, 1000);
+        // count down in the beginning
+        if (score.children[0].textContent == 0) {
+            remainingTime.textContent = 3 + +remainingTime.textContent
+        }
+        
+        // get a word
+        randomWord()
+    }
 
     // get randomWord form array
     function randomWord() {
@@ -98,7 +130,7 @@
             remainingTime.textContent = defaultTime // reset the countdown time
             score.children[0].textContent++
             clearInterval(timer)
-            startButton.click()
+            startGame()
         }
     }    
 
@@ -128,7 +160,6 @@
 
         remainingTime.textContent = defaultTime
         score.children[0].innerHTML = 0
-        words = [...callbackWords]
 
         upcomingWords.innerHTML = 'Words Will Show Here'
         theWord.innerHTML = ''
@@ -164,28 +195,22 @@
 
 
 // events
-    let timer
     startButton.addEventListener('click', ()=>{
-        startButton.style.display = 'none' // hide the button
-        restartButton.style.display = 'block'
-        exitButton.style.display = 'block'
-        selectMenu.disabled = true
-        input.value = '' // clear input field to type something else
-        input.focus()
-        // count down
-        timer = setInterval(() => {
-            remainingTime.textContent = remainingTime.textContent - 1
-            if (remainingTime.textContent == 0) {
-                gameOver()
+        startButton.textContent = 'loading random words...'
+        fetch('https://random-word-api.herokuapp.com/all')
+        .then(res => res.json())
+        .then(data => {
+            words = []
+            for (let i = 0; i < 30; i++) {
+                let randomWord = data[Math.floor(Math.random() * data.length)]
+                if (randomWord.length <= 8) {
+                    words.push(randomWord)
+                } else {
+                    i--
+                }
             }
-        }, 1000);
-        // count down in the beginning
-        if (score.children[0].textContent == 0) {
-            remainingTime.textContent = 3 + +remainingTime.textContent
-        }
-        
-        // get a word
-        randomWord()
+        })
+        .then(startGame)
     })
 
     // check what you type
@@ -193,6 +218,7 @@
 
     // restart button
     restartButton.addEventListener('click', ()=>{
+        restartButton.textContent = 'loading random words...'
         reset()
         startButton.click()
     })

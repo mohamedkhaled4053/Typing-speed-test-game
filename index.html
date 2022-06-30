@@ -20,10 +20,14 @@
                     Level <span class="lvl"></span>
                     & You Have <span class="seconds"></span> Seconds To Type The Word
                 </div>
-                <select class="list">
-                    <option value="" disabled selected>change level</option>
+                <div class="setting">
+                    <select class="list">
+                        <option value="" disabled selected>change level</option>
+                    </select>
 
-                </select>
+                    <input type="number" id="words-number" placeholder="words number" >
+                    <input type="number" id="words-length" placeholder="words maximum length">
+                </div>
             </div>
             <div class="buttons">
                 <div class="start">Start Playing</div>
@@ -31,7 +35,7 @@
                 <div class="exit">Exit</div>
             </div>
             <div class="the-word"></div>
-            <input type="text" class="input" />
+            <input type="text" class="test-input" />
             <div class="upcoming-words">Words Will Show Here</div>
             <div class="control">
                 <div class="time">Time Left: <span></span> Seconds</div>

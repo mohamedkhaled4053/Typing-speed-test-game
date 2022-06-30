@@ -48,7 +48,7 @@
         wordMaxLengthInput.disabled = true
         wordsNumberInput.disabled = true
 
-        score.children[1].innerHTML = wordsNumberInput.value
+        score.children[1].innerHTML = wordsNumberInput.value | 20
         input.value = '' // clear input field to type something else
         input.focus()
         // count down
@@ -157,6 +157,23 @@
         }
     }
 
+    function rebuidWords(data){
+        words = []
+
+        // get setting values or assign it to default values
+        let wordMaxLength = (wordMaxLengthInput.value)? wordMaxLengthInput.value: 8
+        let wordsNumber = (wordsNumberInput.value)? wordsNumberInput.value : 20
+        // rebuid words depending on setting
+        for (let i = 0; i < wordsNumber; i++) {
+            let randomWord = data[Math.floor(Math.random() * data.length)]
+            if (randomWord.length <= wordMaxLength) {
+                words.push(randomWord)
+            } else {
+                i--
+            }
+        }
+    }
+
 
 // main code
     lvlSpan.textContent = defaultLevel
@@ -187,25 +204,13 @@
         // get random words from an API
         fetch('https://random-word-api.herokuapp.com/all')
         .then(res => res.json())
-        .then(data => {
-            words = []
-
-            // get setting values or assign it to default values
-            let wordMaxLength = (wordMaxLengthInput.value)? wordMaxLengthInput.value: 8
-            let wordsNumber = (wordsNumberInput.value)? wordsNumberInput.value : 20
-            // rebuid words depending on setting
-            for (let i = 0; i < wordsNumber; i++) {
-                let randomWord = data[Math.floor(Math.random() * data.length)]
-                if (randomWord.length <= wordMaxLength) {
-                    words.push(randomWord)
-                } else {
-                    i--
-                }
-            }
-        })
+        .then(rebuidWords)
         .then(startGame)
         // if request failed we can began with the default array of words
-        .catch(startGame)
+        .catch(()=>{
+            rebuidWords(defaltWords)
+            startGame()
+        })
     })
 
     // check what you type

@@ -53,7 +53,7 @@ body {
     color: royalblue;
     border-radius: 5px;
     cursor: pointer;
-    min-width: 230px
+    min-width: 220px
 }
 
 .message span {
@@ -120,7 +120,6 @@ body {
     border        : 3px solid var(--main-color);
     font-size     : 20px;
     text-align    : center;
-    text-transform: capitalize;
     border-radius : 6px;
     caret-color   : var(--main-color);
 }

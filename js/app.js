@@ -6,12 +6,13 @@
     let upcomingWords = document.querySelector('.upcoming-words')
     let lvlSpan = document.querySelector('.message .lvl')
     let timeSpan = document.querySelector('.message .seconds')
-    let input = document.querySelector('input')
+    let input = document.querySelector('.test-input')
     let remainingTime = document.querySelector('.control .time span')
     let score = document.querySelector('.score')
     let finish = document.querySelector('.finish')
     let selectMenu = document.querySelector('.message select')
-    let timer
+    let wordsNumberInput = document.querySelector('#words-number')
+    let wordMaxLengthInput = document.querySelector('#words-length')
 
     
     // add lvls
@@ -25,46 +26,15 @@
     let defaultLevel =window.localStorage.getItem('level') || 'normal';
     let defaultTime = lvls[defaultLevel]
 
-    // array of words
-    let defaltWords = [
-        "Hello",
-        "Programming",
-        "Code",
-        "Javascript",
-        "Town",
-        "Country",
-        "Testing",
-        "Youtube",
-        "Linkedin",
-        "Twitter",
-        "Github",
-        "Leetcode",
-        "Internet",
-        "Python",
-        "Scala",
-        "Destructuring",
-        "Paradigm",
-        "Styling",
-        "Cascade",
-        "Documentation",
-        "Coding",
-        "Funny",
-        "Working",
-        "Dependencies",
-        "Task",
-        "Runner",
-        "Roles",
-        "Test",
-        "Rust",
-        "Playing"
-    ];
-
+    // array of default words
+    let defaltWords = ["Hello","Programming","Code","Javascript","Town","Country","Testing","Youtube","Linkedin","Twitter","Github","Leetcode","Internet","Python","Scala","Destructuring","Paradigm","Styling","Cascade","Documentation","Coding","Funny","Working","Dependencies","Task","Runner","Roles","Test","Rust","Playing"];
     let words = defaltWords
 
 
 // helper functions
 
     // start the game
+    let timer
     function startGame() {
         // remove loading text
         startButton.textContent = 'start playing'
@@ -75,6 +45,10 @@
         restartButton.style.display = 'block'
         exitButton.style.display = 'block'
         selectMenu.disabled = true
+        wordMaxLengthInput.disabled = true
+        wordsNumberInput.disabled = true
+
+        score.children[1].innerHTML = wordsNumberInput.value
         input.value = '' // clear input field to type something else
         input.focus()
         // count down
@@ -156,7 +130,10 @@
     function reset() {
         input.value = '' // clear input field to type something else
         clearInterval(timer)
-        selectMenu.disabled = false // remove disabled attr form selectMenu
+        // remove disabled attr form settings
+        selectMenu.disabled = false 
+        wordMaxLengthInput.disabled = false 
+        wordsNumberInput.disabled = false 
 
         remainingTime.textContent = defaultTime
         score.children[0].innerHTML = 0
@@ -185,7 +162,7 @@
     lvlSpan.textContent = defaultLevel
     timeSpan.textContent = defaultTime
     remainingTime.textContent = defaultTime
-    score.children[1].innerHTML = words.length
+    score.children[1].innerHTML = 20
 
     // auto build select menu
     buildSelectMenu()
@@ -196,14 +173,30 @@
 
 // events
     startButton.addEventListener('click', ()=>{
+        // check if setting are valid
+        if (wordsNumberInput.value && wordsNumberInput.value < 5) {
+            alert('words number can\'t be less than 5')
+            return false
+        }
+        if (wordMaxLengthInput.value && wordMaxLengthInput.value < 3) {
+            alert('word length can\'t be less than 3')
+            return false
+        }
+
         startButton.textContent = 'loading random words...'
+        // get random words from an API
         fetch('https://random-word-api.herokuapp.com/all')
         .then(res => res.json())
         .then(data => {
             words = []
-            for (let i = 0; i < 30; i++) {
+
+            // get setting values or assign it to default values
+            let wordMaxLength = (wordMaxLengthInput.value)? wordMaxLengthInput.value: 8
+            let wordsNumber = (wordsNumberInput.value)? wordsNumberInput.value : 20
+            // rebuid words depending on setting
+            for (let i = 0; i < wordsNumber; i++) {
                 let randomWord = data[Math.floor(Math.random() * data.length)]
-                if (randomWord.length <= 8) {
+                if (randomWord.length <= wordMaxLength) {
                     words.push(randomWord)
                 } else {
                     i--
@@ -211,6 +204,8 @@
             }
         })
         .then(startGame)
+        // if request failed we can began with the default array of words
+        .catch(startGame)
     })
 
     // check what you type

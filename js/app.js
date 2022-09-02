@@ -44,11 +44,7 @@
         startButton.style.display = 'none' // hide the button
         restartButton.style.display = 'block'
         exitButton.style.display = 'block'
-        selectMenu.disabled = true
-        wordMaxLengthInput.disabled = true
-        wordsNumberInput.disabled = true
 
-        console.log(wordsNumberInput.value);
         score.children[1].innerHTML = wordsNumberInput.value || 20
         input.value = '' // clear input field to type something else
         input.focus()
@@ -131,10 +127,6 @@
     function reset() {
         input.value = '' // clear input field to type something else
         clearInterval(timer)
-        // remove disabled attr form settings
-        selectMenu.disabled = false 
-        wordMaxLengthInput.disabled = false 
-        wordsNumberInput.disabled = false 
 
         remainingTime.textContent = defaultTime
         score.children[0].innerHTML = 0
@@ -201,6 +193,11 @@
             return false
         }
 
+        // disable inputs
+        selectMenu.disabled = true
+        wordMaxLengthInput.disabled = true
+        wordsNumberInput.disabled = true
+
         startButton.textContent = 'loading random words...'
         // get random words from an API
         fetch('https://random-word-api.herokuapp.com/all')
@@ -226,9 +223,16 @@
 
     // exit button
     exitButton.addEventListener('click', ()=>{
+        // handle buttons
         exitButton.style.display = 'none'
         restartButton.style.display = 'none'
         startButton.style.display = 'block'
+
+        // remove disabled attr form settings
+        selectMenu.disabled = false 
+        wordMaxLengthInput.disabled = false 
+        wordsNumberInput.disabled = false
+
         reset()
     })
 

@@ -48,7 +48,8 @@
         wordMaxLengthInput.disabled = true
         wordsNumberInput.disabled = true
 
-        score.children[1].innerHTML = wordsNumberInput.value | 20
+        console.log(wordsNumberInput.value);
+        score.children[1].innerHTML = wordsNumberInput.value || 20
         input.value = '' // clear input field to type something else
         input.focus()
         // count down

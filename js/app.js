@@ -157,7 +157,7 @@
         }
     }
 
-    function rebuidWords(data){
+    function rebuildWords(data){
         words = []
 
         // get setting values or assign it to default values
@@ -204,11 +204,11 @@
         // get random words from an API
         fetch('https://random-word-api.herokuapp.com/all')
         .then(res => res.json())
-        .then(rebuidWords)
+        .then(rebuildWords)
         .then(startGame)
         // if request failed we can began with the default array of words
         .catch(()=>{
-            rebuidWords(defaltWords)
+            rebuildWords(defaltWords)
             startGame()
         })
     })
